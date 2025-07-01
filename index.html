@@ -1,64 +1,112 @@
-<!-- index.html - WebApp Bar Turno A (utente) -->
 <!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Bar Turno A</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #b71c1c; /* rosso pompiere */
+      color: white;
+      text-align: center;
+    }
+    header {
+      background: #d32f2f;
+      padding: 1rem;
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+    .credito {
+      margin: 1.5rem 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .qr-code {
+      margin: 0 auto 2rem;
+      width: 200px;
+      height: 200px;
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    #storico {
+      max-width: 400px;
+      margin: 0 auto 2rem;
+      text-align: left;
+      background: #880e0e;
+      padding: 1rem;
+      border-radius: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    #storico li {
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Bar Turno A</h1>
-  </header>
 
-  <div class="crediti">
-    Credito: <span id="credito">0.00</span> €
-  </div>
+<header>Bar Turno A</header>
 
-  <div class="qr-code">
-    <canvas id="qrcode"></canvas>
-  </div>
+<div class="credito">
+  Credito: <span id="credito">0.00</span> €
+</div>
 
-  <div class="storico">
-    <h3>Storico acquisti</h3>
-    <ul id="storico"></ul>
-  </div>
+<div class="qr-code">
+  <canvas id="qrcode"></canvas>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-  <script>
-    const userId = new URLSearchParams(window.location.search).get("id");
-if (!userId) {
-  alert("ID utente mancante nell'URL.");
-  throw new Error("ID mancante");
-}
+<h3>Storico acquisti</h3>
+<ul id="storico"></ul>
 
-    const API_URL = 'https://script.google.com/macros/s/AKfycby0Z4pIJaRgF9m8eEocLqBcCXaNUmPHPCBggQ_2G6w/dev';
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script>
+  // Prendi ID utente da URL
+  const userId = new URLSearchParams(window.location.search).get("id");
+  if (!userId) {
+    alert("ID utente mancante nell'URL. Usa ?id=001 o simile");
+    throw new Error("ID mancante");
+  }
 
+  // URL script Google Apps Script
+  const API_URL = 'https://script.google.com/macros/s/AKfycby0Z4pIJaRgF9m8eEocLqBcCXaNUmPHPCBggQ_2G6w/dev';
 
-    fetch(`${API_URL}?action=getUserData&id=${userId}`)
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById("credito").textContent = data.credito.toFixed(2);
-        const ul = document.getElementById("storico");
-        data.storico.forEach(entry => {
-          const li = document.createElement("li");
-          li.textContent = `${entry.data}: ${entry.tipo} (${entry.importo}€)`;
-          ul.appendChild(li);
-        });
+  // Carica dati utente
+  fetch(`${API_URL}?action=getUserData&id=${userId}`)
+    .then(res => {
+      if (!res.ok) throw new Error("Risposta non OK: " + res.status);
+      return res.json();
+    })
+    .then(data => {
+      if (!data || data.errore) {
+        alert("Errore: " + (data.errore || "nessun dato ricevuto"));
+        return;
+      }
+      document.getElementById("credito").textContent = data.credito.toFixed(2);
+
+      const ul = document.getElementById("storico");
+      ul.innerHTML = ''; // pulisci lista
+      data.storico.forEach(entry => {
+        const li = document.createElement("li");
+        li.textContent = `${entry.data}: ${entry.tipo} (${entry.importo}€)`;
+        ul.appendChild(li);
       });
 
-    QRCode.toCanvas(document.getElementById("qrcode"), userId, function (error) {
-      if (error) console.error(error);
+      // Genera QR code col userId
+      QRCode.toCanvas(document.getElementById("qrcode"), userId, function (error) {
+        if (error) console.error(error);
+      });
+    })
+    .catch(err => {
+      console.error("Errore fetch:", err);
+      alert("Errore nel caricamento dati: " + err.message);
     });
-  </script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('Service Worker registrato'))
-        .catch(err => console.error('Service Worker error', err));
-    }
-  </script>
+</script>
+
 </body>
 </html>
+
