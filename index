@@ -1,0 +1,58 @@
+<!-- index.html - WebApp Bar Turno A (utente) -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bar Turno A</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Bar Turno A</h1>
+  </header>
+
+  <div class="crediti">
+    Credito: <span id="credito">0.00</span> €
+  </div>
+
+  <div class="qr-code">
+    <canvas id="qrcode"></canvas>
+  </div>
+
+  <div class="storico">
+    <h3>Storico acquisti</h3>
+    <ul id="storico"></ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script>
+    const userId = new URLSearchParams(window.location.search).get("id") || "demo";
+    const API_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+
+    fetch(`${API_URL}?action=getUserData&id=${userId}`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("credito").textContent = data.credito.toFixed(2);
+        const ul = document.getElementById("storico");
+        data.storico.forEach(entry => {
+          const li = document.createElement("li");
+          li.textContent = `${entry.data}: ${entry.tipo} (${entry.importo}€)`;
+          ul.appendChild(li);
+        });
+      });
+
+    QRCode.toCanvas(document.getElementById("qrcode"), userId, function (error) {
+      if (error) console.error(error);
+    });
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker registrato'))
+        .catch(err => console.error('Service Worker error', err));
+    }
+  </script>
+</body>
+</html>
