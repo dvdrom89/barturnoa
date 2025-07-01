@@ -29,7 +29,7 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <script>
     const userId = new URLSearchParams(window.location.search).get("id") || "demo";
-    const API_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxC_gN1sbVDNBz9eFhZjYa6lYFdz7BLRaGUXX_17h1yq4UJXN_LKZq76r1X5KOoUz7E/exec';
 
     fetch(`${API_URL}?action=getUserData&id=${userId}`)
       .then(res => res.json())
