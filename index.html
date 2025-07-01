@@ -72,19 +72,17 @@
     throw new Error("ID mancante");
   }
 
-  // URL script Google Apps Script (metti il tuo reale)
-  const API_URL = 'https://script.google.com/macros/s/AKfycby0Z4pIJaRgF9m8eEocLqBcCXaNUmPHPCBggQ_2G6w/dev';
+  // Il tuo URL corretto Google Apps Script
+  const API_URL = 'https://script.google.com/macros/s/AKfycbxgwU-Gzh93-mC-A1KWvay_FM2mRDbowAPAm-8gyjLitFnUdgauzIeQmZ9Dtix59T-G/exec';
 
   // Funzione per aggiornare la UI con i dati
   function aggiornaUI(data) {
-    // Controlla credito valido
     let credito = 0;
     if (data.credito != null && !isNaN(data.credito)) {
       credito = Number(data.credito);
     }
     document.getElementById("credito").textContent = credito.toFixed(2);
 
-    // Pulisci e carica storico
     const ul = document.getElementById("storico");
     ul.innerHTML = '';
     if (Array.isArray(data.storico)) {
@@ -95,7 +93,6 @@
       });
     }
 
-    // Genera QR code con userId
     QRCode.toCanvas(document.getElementById("qrcode"), userId, function (error) {
       if (error) console.error("Errore QR code:", error);
     });
