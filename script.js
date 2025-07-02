@@ -1,42 +1,64 @@
-const apiUrl = "https://script.google.com/macros/s/AKfycbx_3yeauOxznQ0WqJ7xLEpmxCQXgXRV1w3_0au3VAJh1AdTNICGbbWjxz1Gj3b5jgRs/exec";
+const BASE_URL = "https://script.google.com/macros/s/AKfycbx_3yeauOxznQ0WqJ7xLEpmxCQXgXRV1w3_0au3VAJh1AdTNICGbbWjxz1Gj3b5jgRs/exec";
 
-function loadUser() {
+async function loadUser() {
   const userId = document.getElementById("userId").value.trim();
   if (!userId) {
-    alert("Inserisci un ID valido.");
+    alert("Inserisci un ID valido");
     return;
   }
 
-  fetch(`${apiUrl}?action=getUserData&id=${userId}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        document.getElementById("user-name").innerText = `Benvenuto, ${data.name}`;
-        document.getElementById("user-credit").innerText = data.credit;
-        document.getElementById("user-history").innerHTML = "";
+  try {
+    const response = await fetch(`${BASE_URL}?action=getUser&id=${encodeURIComponent(userId)}`);
+    if (!response.ok) throw new Error("Errore nella risposta dal server");
+    const data = await response.json();
 
-        data.history.forEach(item => {
-          const li = document.createElement("li");
-          li.innerText = `${item.data}: ${item.voce} - € ${item.importo}`;
-          document.getElementById("user-history").appendChild(li);
-        });
+    if (data === "Utente non trovato") {
+      alert("Utente non trovato");
+      return;
+    }
 
-        document.getElementById("login-section").style.display = "none";
-        document.getElementById("user-section").style.display = "block";
+    document.getElementById("user-name").textContent = `${data.nome} ${data.cognome}`;
+    document.getElementById("user-credit").textContent = data.credito.toFixed(2);
+    document.getElementById("login-section").style.display = "none";
+    document.getElementById("user-section").style.display = "block";
 
-        new QRCode(document.getElementById("qrcode"), {
-          text: userId,
-          width: 180,
-          height: 180
-        });
-      } else {
-        alert("Utente non trovato.");
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Errore durante il caricamento dei dati.");
+    // Genera QR code con ID utente
+    new QRCode(document.getElementById("qrcode"), {
+      text: data.id,
+      width: 128,
+      height: 128,
     });
+
+    // Carica lo storico acquisti
+    loadUserHistory(data.id);
+
+  } catch (error) {
+    alert("Errore durante il caricamento utente: " + error.message);
+  }
+}
+
+async function loadUserHistory(userId) {
+  try {
+    const response = await fetch(`${BASE_URL}?action=getHistory&id=${encodeURIComponent(userId)}`);
+    if (!response.ok) throw new Error("Errore nella risposta dal server");
+    const history = await response.json();
+
+    const historyList = document.getElementById("user-history");
+    historyList.innerHTML = "";
+    if (history.length === 0) {
+      historyList.innerHTML = "<li>Nessuno storico disponibile</li>";
+      return;
+    }
+
+    history.forEach(item => {
+      const li = document.createElement("li");
+      const date = new Date(item[0]);
+      li.textContent = `${date.toLocaleDateString()} - ${item[3]} (${item[4] > 0 ? "+" : ""}${item[4]} €) da ${item[2]}`;
+      historyList.appendChild(li);
+    });
+  } catch (error) {
+    alert("Errore durante il caricamento dello storico: " + error.message);
+  }
 }
 
 function logout() {
@@ -44,4 +66,5 @@ function logout() {
   document.getElementById("user-section").style.display = "none";
   document.getElementById("userId").value = "";
   document.getElementById("qrcode").innerHTML = "";
+  document.getElementById("user-history").innerHTML = "";
 }
