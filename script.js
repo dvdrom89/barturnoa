@@ -2,6 +2,8 @@ const BASE_URL = "https://script.google.com/macros/s/AKfycbx_3yeauOxznQ0WqJ7xLEp
 
 async function loadUser() {
   const userId = document.getElementById("userId").value.trim();
+localStorage.setItem("userId", userId);
+
   if (!userId) {
     alert("Inserisci un ID valido");
     return;
