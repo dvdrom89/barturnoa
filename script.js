@@ -2,13 +2,13 @@ const BASE_URL = "https://script.google.com/macros/s/AKfycbx_3yeauOxznQ0WqJ7xLEp
 
 async function loadUser() {
   const userId = document.getElementById("userId").value.trim();
-localStorage.setItem("userId", userId);
+
 
   if (!userId) {
     alert("Inserisci un ID valido");
     return;
   }
-
+localStorage.setItem("userId", userId);
   try {
     const response = await fetch(`${BASE_URL}?action=getUser&id=${encodeURIComponent(userId)}`);
     if (!response.ok) throw new Error("Errore nella risposta dal server");
@@ -38,6 +38,8 @@ localStorage.setItem("userId", userId);
     alert("Errore durante il caricamento utente: " + error.message);
   }
 }
+// Precompila il campo ID se già salvato
+document.getElementById("userId").value = localStorage.getItem("userId") || "";
 
 async function loadUserHistory(userId) {
   try {
