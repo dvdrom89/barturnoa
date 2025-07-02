@@ -1,5 +1,5 @@
 // ⭐⭐⭐ SOSTITUISCI QUESTO CON L'URL DELLA TUA WEB APP DI GOOGLE APPS SCRIPT ⭐⭐⭐
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwbp8plsTPH4sJQN3Md2L-2M_-rFRxbVqYTChQupNFWHqq6tSs8eUABXjOacWadwrpY/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw2ZsTd58kYuHI8wPkymszS40Nn7mYnUoHv4dr6wn7sf25xsfkdoHwHQfSSFGfjeZYk/exec';
 // Esempio: 'https://script.google.com/macros/s/AKfyc.../exec';
 // ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
 
