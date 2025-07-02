@@ -1,122 +1,91 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bar Turno A</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0; padding: 0;
-      background: #b71c1c; /* rosso pompiere */
-      color: white;
-      text-align: center;
-    }
-    header {
-      background: #d32f2f;
-      padding: 1rem;
-      font-size: 2rem;
-      font-weight: bold;
-      letter-spacing: 2px;
-    }
-    .credito {
-      margin: 1.5rem 0;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    .qr-code {
-      margin: 0 auto 2rem;
-      width: 200px;
-      height: 200px;
-      background: white;
-      padding: 10px;
-      border-radius: 10px;
-    }
-    #storico {
-      max-width: 400px;
-      margin: 0 auto 2rem;
-      text-align: left;
-      background: #880e0e;
-      padding: 1rem;
-      border-radius: 8px;
-      max-height: 300px;
-      overflow-y: auto;
-    }
-    #storico li {
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bar Pompieri - Carta Fedeltà</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container">
+        <h1>Bar Pompieri</h1>
 
-<header>Bar Turno A</header>
+        <div id="home-view" class="view active">
+            <p>Seleziona la tua modalità:</p>
+            <button id="btn-operatore">Sono un Operatore</button>
+            <button id="btn-utente">Sono un Pompiere</button>
+        </div>
 
-<div class="credito">
-  Credito: <span id="credito">0.00</span> €
-</div>
+        <div id="operatore-view" class="view hidden">
+            <h2>Pannello Operatore</h2>
+            <button id="btn-back-operatore" class="back-button">← Indietro</button>
 
-<div class="qr-code">
-  <canvas id="qrcode"></canvas>
-</div>
+            <div class="section">
+                <h3>Nuovo Utente</h3>
+                <input type="text" id="input-nome-utente" placeholder="Nome Cognome Nuovo Pompiere">
+                <button id="btn-registra-utente">Registra Nuovo</button>
+                <p id="registra-utente-msg" class="message"></p>
+            </div>
 
-<h3>Storico acquisti</h3>
-<ul id="storico"></ul>
+            <div class="section">
+                <h3>Scansiona QR / Seleziona Utente</h3>
+                <video id="qr-scanner-video" class="qr-video"></video>
+                <p id="qr-status">Scansiona il QR Code...</p>
+                <select id="select-utente-operatore">
+                    <option value="">-- Seleziona Utente --</option>
+                </select>
+                <p>Utente Selezionato: <strong id="utente-selezionato-nome">Nessuno</strong> (Credito: <span id="utente-selezionato-credito">0.00</span>€)</p>
+            </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-<script>
-  // Prendi ID utente da URL
-  const userId = new URLSearchParams(window.location.search).get("id");
-  if (!userId) {
-    alert("ID utente mancante nell'URL. Usa ?id=001 o simile");
-    throw new Error("ID mancante");
-  }
+            <div class="section">
+                <h3>Addebita Consumazione</h3>
+                <select id="select-prodotto-addebito">
+                    <option value="">-- Seleziona Prodotto --</option>
+                </select>
+                <input type="number" id="input-importo-addebito" placeholder="Oppure inserisci importo manuale" step="0.01">
+                <button id="btn-addebita">Addebita</button>
+                <p id="addebito-msg" class="message"></p>
+            </div>
 
-  // URL della tua Web App Google Apps Script
-  const API_URL = 'https://script.google.com/macros/s/AKfycbxgwU-Gzh93-mC-A1KWvay_FM2mRDbowAPAm-8gyjLitFnUdgauzIeQmZ9Dtix59T-G/exec';
+            <div class="section">
+                <h3>Accredita Credito</h3>
+                <input type="number" id="input-importo-accredito" placeholder="Importo da accreditare" step="0.01">
+                <input type="text" id="input-descrizione-accredito" placeholder="Descrizione (es. Ricarica)" value="Ricarica">
+                <button id="btn-accredita">Accredita</button>
+                <p id="accredito-msg" class="message"></p>
+            </div>
 
-  // Funzione per aggiornare la UI con i dati
-  function aggiornaUI(data) {
-    let credito = 0;
-    if (data.credito != null && !isNaN(data.credito)) {
-      credito = Number(data.credito);
-    }
-    document.getElementById("credito").textContent = credito.toFixed(2);
+            <div class="section">
+                <h3>Storico Operatore (Recenti)</h3>
+                <ul id="operatore-storico-lista">
+                    </ul>
+            </div>
+        </div>
 
-    const ul = document.getElementById("storico");
-    ul.innerHTML = '';
-    if (Array.isArray(data.storico)) {
-      data.storico.forEach(entry => {
-        const li = document.createElement("li");
-        li.textContent = `${entry.data}: ${entry.tipo} (${entry.importo}€)`;
-        ul.appendChild(li);
-      });
-    }
+        <div id="utente-view" class="view hidden">
+            <h2>La tua Carta Fedeltà</h2>
+            <button id="btn-back-utente" class="back-button">← Indietro</button>
 
-    QRCode.toCanvas(document.getElementById("qrcode"), userId, function (error) {
-      if (error) console.error("Errore QR code:", error);
-    });
-  }
+            <p>Ciao, <strong id="nome-pompiere"></strong>!</p>
+            <p>Il tuo credito attuale: <strong id="credito-pompiere">0.00 €</strong></p>
 
-  // Chiamata API
-  fetch(`${API_URL}?action=getUserData&id=${userId}`)
-    .then(res => {
-      if (!res.ok) throw new Error("Risposta non OK: " + res.status);
-      return res.json();
-    })
-    .then(data => {
-      if (!data || data.errore) {
-        alert("Errore: " + (data.errore || "nessun dato ricevuto"));
-        return;
-      }
-      aggiornaUI(data);
-    })
-    .catch(err => {
-      console.error("Errore fetch:", err);
-      alert("Errore nel caricamento dati: " + err.message);
-    });
-</script>
+            <div class="qr-code-display">
+                <h3>Il tuo QR Code</h3>
+                <canvas id="qr-code-canvas"></canvas>
+                <p class="small-text">Mostra questo codice all'operatore per addebitare</p>
+            </div>
 
+            <div class="section">
+                <h3>Storico Acquisti</h3>
+                <ul id="storico-acquisti-lista">
+                    </ul>
+            </div>
+            <button id="btn-logout-utente">Logout</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.0.0/dist/jsQR.min.js"></script>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
-
