@@ -38,8 +38,10 @@ localStorage.setItem("userId", userId);
     alert("Errore durante il caricamento utente: " + error.message);
   }
 }
-// Precompila il campo ID se già salvato
-document.getElementById("userId").value = localStorage.getItem("userId") || "";
+window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("userId").value = localStorage.getItem("userId") || "";
+});
+
 
 async function loadUserHistory(userId) {
   try {
