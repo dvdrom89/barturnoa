@@ -1,20 +1,120 @@
-
 body {
   font-family: 'Orbitron', sans-serif;
   background-color: #000;
   color: #eee;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {
+  width: 100%;
   max-width: 500px;
-  margin: 30px auto;
-  padding: 20px;
   background: #4B5320;
+  padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
   border: 2px solid #800000;
+}
+
+/* Login full screen */
+#login-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  text-align: center;
+}
+
+#login-section label {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+#login-section input {
+  width: 100%;
+  max-width: 300px;
+  font-size: 1.2rem;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 2px solid #FFD700;
+  background: #1a1a1a;
+  color: white;
+  text-align: center;
+}
+
+#login-section button {
+  font-size: 1.2rem;
+  padding: 12px 20px;
+  width: 100%;
+  max-width: 300px;
+  background-color: #800000;
+  color: #FFD700;
+  border: none;
+  border-radius: 6px;
+}
+
+/* User area */
+#user-section {
+  margin-top: 20px;
+}
+
+#user-section h2 {
+  text-align: center;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+#user-credit {
+  font-size: 1.3rem;
+  color: #FFD700;
+  display: block;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* QR code ingrandito */
+#qrcode {
+  width: 220px;
+  height: 220px;
+  margin: 0 auto 20px auto;
+}
+
+#user-history {
+  padding-left: 0;
+  list-style: none;
+}
+
+#user-history li {
+  background: #2e2e2e;
+  margin: 5px 0;
+  padding: 10px;
+  border-left: 5px solid #FFD700;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+button {
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  background-color: #800000;
+  color: #FFD700;
+  cursor: pointer;
+  width: 100%;
+  max-width: 300px;
+  margin: 10px auto;
+  display: block;
+}
+
+button:hover {
+  background-color: #a00000;
 }
 
 h1 {
@@ -22,65 +122,59 @@ h1 {
   text-align: center;
   color: #FFD700;
   margin-bottom: 20px;
+  text-shadow: 1px 1px 2px #800000;
 }
 
-input[type="text"] {
+.helmet-icon {
+  font-size: 32px;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+/* Splash screen */
+#splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  padding: 12px;
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-  border: 2px solid #FFD700;
-  border-radius: 6px;
-  background: #1a1a1a;
-  color: white;
+  height: 100%;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeOut 2s ease-out 2.2s forwards;
 }
 
-button {
-  width: 100%;
-  padding: 12px;
-  font-size: 1.1rem;
-  background-color: #800000;
-  color: #FFD700;
-  border: none;
-  border-radius: 6px;
-  margin-top: 10px;
-  cursor: pointer;
+#splash-logo {
+  width: 160px;
+  height: auto;
+  opacity: 0;
+  animation: fadeIn 1s ease-in 0.5s forwards;
 }
 
-button:hover {
-  background-color: #a00000;
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-#user-section li {
-  font-size: 1rem;
-  padding: 10px;
-  border-left: 4px solid #FFD700;
-  margin-bottom: 8px;
-  background: #2e2e2e;
-  border-radius: 5px;
+@keyframes fadeOut {
+  to { opacity: 0; visibility: hidden; }
 }
 
-/* 🟨 Aggiungi questa parte per migliorare su dispositivi piccoli */
+/* Responsive */
 @media (max-width: 480px) {
   .container {
-    margin: 10px;
-    padding: 15px;
-  }
-
-  h1 {
-    font-size: 1.3rem;
-  }
-
-  input[type="text"], button {
-    font-size: 1rem;
-  }
-
-  #user-section li {
-    font-size: 0.95rem;
+    margin: 15px;
+    padding: 20px;
   }
 
   #qrcode {
-    text-align: center;
-    margin: 10px auto;
+    width: 180px;
+    height: 180px;
+  }
+
+  #user-section h2 {
+    font-size: 1.2rem;
   }
 }
