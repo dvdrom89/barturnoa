@@ -3,29 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gestione Bar - Utente</title>
+  <title>Gestione Bar - Vigile A</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-
+  <link rel="icon" href="fire_helmet_A.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>Gestione Bar</h1>
+    <h1><span class="helmet-icon">🧑‍🚒</span> Gestione Bar Vigili</h1>
 
     <div id="login-section">
-      <label for="userId">Inserisci il tuo ID:</label>
+      <label for="userId">Inserisci il tuo ID Vigile:</label>
       <input type="text" id="userId" placeholder="es. 001" />
-      <button onclick="loadUser()">Entra</button>
+      <button onclick="loadUser()">🚒 Entra</button>
     </div>
 
     <div id="user-section" style="display:none;">
       <h2 id="user-name"></h2>
       <p>Credito attuale: <strong id="user-credit"></strong> €</p>
       <div id="qrcode"></div>
-      <h3>Storico acquisti</h3>
+      <h3>🧾 Storico acquisti</h3>
       <ul id="user-history"></ul>
-      <button onclick="logout()">Esci</button>
+      <button onclick="logout()">❌ Esci</button>
     </div>
   </div>
 
