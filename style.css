@@ -1,7 +1,7 @@
 body {
   font-family: 'Orbitron', sans-serif;
-  background-color: #1c1c1c;
-  color: #f1f1f1;
+  background-color: #000000;
+  color: #eeeeee;
   margin: 0;
   padding: 0;
 }
@@ -9,16 +9,17 @@ body {
 .container {
   max-width: 500px;
   margin: 50px auto;
-  background: #2b2b2b;
+  background: #4B5320; /* verde militare */
   padding: 30px;
   border-radius: 15px;
-  box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
-  border: 2px solid #ff0000;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); /* giallo */
+  border: 2px solid #800000; /* rosso bordeaux */
 }
 
 h1 {
   text-align: center;
-  color: #ff4c4c;
+  color: #FFD700; /* giallo oro */
+  text-shadow: 1px 1px 2px #800000;
 }
 
 .helmet-icon {
@@ -33,17 +34,17 @@ input[type="text"] {
   margin-top: 10px;
   margin-bottom: 20px;
   box-sizing: border-box;
-  border: 2px solid #ff0000;
+  border: 2px solid #FFD700;
   border-radius: 8px;
-  background-color: #1c1c1c;
+  background-color: #1a1a1a;
   color: #fff;
 }
 
 button {
   padding: 12px 24px;
-  background-color: #e60000;
+  background-color: #800000;
   border: none;
-  color: white;
+  color: #FFD700;
   font-size: 16px;
   cursor: pointer;
   border-radius: 8px;
@@ -51,7 +52,7 @@ button {
 }
 
 button:hover {
-  background-color: #b30000;
+  background-color: #a00000;
 }
 
 #user-section ul {
@@ -60,9 +61,15 @@ button:hover {
 }
 
 #user-section li {
-  background-color: #3a3a3a;
-  margin-bottom: 5px;
-  padding: 8px;
+  background-color: #2e2e2e;
+  margin-bottom: 6px;
+  padding: 10px;
   border-radius: 5px;
-  border-left: 5px solid #ff0000;
+  border-left: 5px solid #FFD700;
 }
+
+#user-credit {
+  color: #FFD700;
+  font-weight: bold;
+}
+
