@@ -1,4 +1,4 @@
-const BASE_URL = "https://script.google.com/macros/s/AKfycbxE7N8UPQouBXlD1rxAjpXcWZXml0F4bkshTiyT3UEJilohVhsqOU4BT75wcgGdmGt1nA/exec";
+const BASE_URL = "https://script.google.com/macros/s/AKfycbzeMXfpbhRVUOxJyLr0C3MjyToZIkK4xf0mS0uuGLrIq_ZUbFRGHikjB01W97JzpJFt/exec";
 
 async function loadUser() {
   const userId = document.getElementById("userId").value.trim();
