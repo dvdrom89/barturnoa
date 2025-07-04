@@ -2,13 +2,11 @@ const BASE_URL = "https://script.google.com/macros/s/AKfycbxE7N8UPQouBXlD1rxAjpX
 
 async function loadUser() {
   const userId = document.getElementById("userId").value.trim();
-
-
   if (!userId) {
     alert("Inserisci un ID valido");
     return;
   }
-localStorage.setItem("userId", userId);
+
   try {
     const response = await fetch(`${BASE_URL}?action=getUser&id=${encodeURIComponent(userId)}`);
     if (!response.ok) throw new Error("Errore nella risposta dal server");
@@ -38,10 +36,6 @@ localStorage.setItem("userId", userId);
     alert("Errore durante il caricamento utente: " + error.message);
   }
 }
-window.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("userId").value = localStorage.getItem("userId") || "";
-});
-
 
 async function loadUserHistory(userId) {
   try {
@@ -74,3 +68,4 @@ function logout() {
   document.getElementById("qrcode").innerHTML = "";
   document.getElementById("user-history").innerHTML = "";
 }
+
