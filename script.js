@@ -2,13 +2,15 @@ const BASE_URL = "https://script.google.com/macros/s/AKfycbxE7N8UPQouBXlD1rxAjpX
 
 async function loadUser() {
   const userId = document.getElementById("userId").value.trim();
+
+
   if (!userId) {
     alert("Inserisci un ID valido");
     return;
   }
-
+localStorage.setItem("userId", userId);
   try {
-    const response = await fetch(`${BASE_URL}?action=getUser&id=${encodeURIComponent(userId)}`);
+    const response = await fetch(${BASE_URL}?action=getUser&id=${encodeURIComponent(userId)});
     if (!response.ok) throw new Error("Errore nella risposta dal server");
     const data = await response.json();
 
@@ -17,7 +19,7 @@ async function loadUser() {
       return;
     }
 
-    document.getElementById("user-name").textContent = `${data.nome} ${data.cognome}`;
+    document.getElementById("user-name").textContent = ${data.nome} ${data.cognome};
     document.getElementById("user-credit").textContent = data.credito.toFixed(2);
     document.getElementById("login-section").style.display = "none";
     document.getElementById("user-section").style.display = "block";
@@ -36,10 +38,14 @@ async function loadUser() {
     alert("Errore durante il caricamento utente: " + error.message);
   }
 }
+window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("userId").value = localStorage.getItem("userId") || "";
+});
+
 
 async function loadUserHistory(userId) {
   try {
-    const response = await fetch(`${BASE_URL}?action=getHistory&id=${encodeURIComponent(userId)}`);
+    const response = await fetch(${BASE_URL}?action=getHistory&id=${encodeURIComponent(userId)});
     if (!response.ok) throw new Error("Errore nella risposta dal server");
     const history = await response.json();
 
@@ -53,7 +59,7 @@ async function loadUserHistory(userId) {
     history.forEach(item => {
       const li = document.createElement("li");
       const date = new Date(item[0]);
-      li.textContent = `${date.toLocaleDateString()} - ${item[3]} (${item[4] > 0 ? "+" : ""}${item[4]} €) da ${item[2]}`;
+      li.textContent = ${date.toLocaleDateString()} - ${item[3]} (${item[4] > 0 ? "+" : ""}${item[4]} €) da ${item[2]};
       historyList.appendChild(li);
     });
   } catch (error) {
@@ -68,4 +74,3 @@ function logout() {
   document.getElementById("qrcode").innerHTML = "";
   document.getElementById("user-history").innerHTML = "";
 }
-
