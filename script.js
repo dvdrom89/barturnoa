@@ -10,7 +10,7 @@ async function loadUser() {
   }
 localStorage.setItem("userId", userId);
   try {
-    const response = await fetch(${BASE_URL}?action=getUser&id=${encodeURIComponent(userId)});
+    const response = await fetch(`${BASE_URL}?action=getUser&id=${encodeURIComponent(userId)}`);
     if (!response.ok) throw new Error("Errore nella risposta dal server");
     const data = await response.json();
 
@@ -45,7 +45,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 async function loadUserHistory(userId) {
   try {
-    const response = await fetch(${BASE_URL}?action=getHistory&id=${encodeURIComponent(userId)});
+    const response = await fetch(`${BASE_URL}?action=getHistory&id=${encodeURIComponent(userId)}`);
     if (!response.ok) throw new Error("Errore nella risposta dal server");
     const history = await response.json();
 
