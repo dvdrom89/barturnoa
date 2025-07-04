@@ -19,7 +19,7 @@ localStorage.setItem("userId", userId);
       return;
     }
 
-    document.getElementById("user-name").textContent = ${data.nome} ${data.cognome};
+    document.getElementById("user-name").textContent = `${data.nome} ${data.cognome}`;
     document.getElementById("user-credit").textContent = data.credito.toFixed(2);
     document.getElementById("login-section").style.display = "none";
     document.getElementById("user-section").style.display = "block";
