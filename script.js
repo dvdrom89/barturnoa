@@ -59,7 +59,7 @@ async function loadUserHistory(userId) {
     history.forEach(item => {
       const li = document.createElement("li");
       const date = new Date(item[0]);
-      li.textContent = ${date.toLocaleDateString()} - ${item[3]} (${item[4] > 0 ? "+" : ""}${item[4]} €) da ${item[2]};
+      li.textContent = `${date.toLocaleDateString()} - ${item[3]} (${item[4] > 0 ? "+" : ""}${item[4]} €) da ${item[2]}`;
       historyList.appendChild(li);
     });
   } catch (error) {
